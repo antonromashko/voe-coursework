@@ -34,7 +34,7 @@ export default {
           { name: 'login', label: 'Login', value: '', type: 'text' },
           { name: 'email', label: 'Email', value: '', type: 'text' },
           { name: 'password', label: 'Password', value: '', type: 'password' },
-          { name: 'password', label: 'Password', value: '', type: 'password' },
+          { name: 'confirm', label: 'Confirm', value: '', type: 'password' },
         ]
     }
   },

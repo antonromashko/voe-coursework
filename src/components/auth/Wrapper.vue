@@ -7,7 +7,7 @@
       <template>
         <slot v-for="item in formData" :name="item.name" :[item.name]="item"></slot>
       </template>
-      <button type="button" :disabled="isPending" @click="$emit('click')">{{ currentButtonName }}</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="button" :disabled="isPending" @click="$emit('click')">{{ currentButtonName }}</button>
     </form>
   </div>
 </template>
@@ -41,15 +41,17 @@ export default {
 <style lang="scss" scoped>
 form {
   button {
-    width: 200px;
+    width: 100px;
     height: 40px;
-    background: cadetblue;
-    margin: 30px;
+    align-self: flex-end;
+    padding: 8px;
+    margin: 8px;
   }
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 10px 30px 30px 30px;
   .form-title {
     display: block;
     text-align: center;

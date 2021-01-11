@@ -14,6 +14,7 @@
                   </li>
                 </ul>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="button" @click="showAddTaskModal">Add</button>
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="button" @click="showAddTaskModal">Logout</button>
               </form>
             </nav>
             <ul class="list-group">
