@@ -1,10 +1,15 @@
 <template>
-<div></div>
+<Todos />
 </template>
 
 <script>
+import Todos from "@/components/todo/Todos.vue";
+
 export default {
-name: "TodoView"
+  name: "TodoView",
+  components: {
+    Todos
+  }
 }
 </script>
 

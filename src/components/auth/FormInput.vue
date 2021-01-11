@@ -1,8 +1,11 @@
 <template>
   <transition name="formTransition" appear>
-    <div>
-      <label>{{ label }}</label>
-      <input :type="type" :value="value" @input="$emit('input', $event.target.value, name)">
+    <div class="input-group m-1 p-2">
+<!--      <label>{{ label }}</label>-->
+       <div class="input-group-prepend" style="width: 120px;">
+    <span class="input-group-text w-100" id="inputGroup-sizing-default">{{ label }}</span>
+  </div>
+      <input class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" :type="type" :value="value" @input="$emit('input', $event.target.value, name)">
     </div>
   </transition>
 </template>

@@ -1,34 +1,28 @@
 <template>
-  <Modal>
-    <template #header>
-      <div id="nav">
-      | <router-link to="/auth">Sign in</router-link>
-      | <router-link to="/registration">Sign up</router-link> |
-      </div>
-    </template>
-    <template #content>
-      <Auth v-if="$route.name === 'Auth'"/>
-      <Registration v-if="$route.name === 'Registration'" />
-    </template>
-  </Modal>
+<div class="modal" :class="{'modal__visible': showModal}">
+  <div class="modal-content">
+    <div class="header">
+      <slot name="header"></slot>
+      <span v-if="enableClose" class="close" @click="$emit('close')">&times;</span>
+    </div>
+    <div class="auth-content">
+       <slot name="content"></slot>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
-import Auth from "@/components/auth/Auth.vue";
-import Registration from "@/components/auth/Registration.vue";
-import Modal from "@/components/helpers/Modal";
-
 export default {
   name: "AuthMain",
-  components: {
-    Auth,
-    Registration,
-    Modal
-  },
-  data() {
-    return {
-      showModal: true,
-      isRegistered: true
+  props: {
+    showModal: {
+      type: Boolean,
+      default: true
+    },
+    enableClose: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
