@@ -1,167 +1,188 @@
 <template>
-  <div class="container">
-    <AddTask :show-modal="showModal" @close="close"/>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card card-white">
-          <div class="card-body">
-            <nav class="navbar navbar-light bg-light justify-content-between">
-              <form class="form-inline justify-content-between w-100">
-                <input class="form-control mr-sm-2 w-50" type="search" placeholder="Search" aria-label="Search">
-                <ul class="nav nav-pills todo-nav">
-                  <li role="presentation" class="nav-item all-task active"><a href="#" class="nav-link">All</a></li>
-                  <li role="presentation" class="nav-item completed-task"><a href="#" class="nav-link">Completed</a>
-                  </li>
-                </ul>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="button" @click="showAddTaskModal">Add</button>
-                <button class="btn btn-outline-danger my-2 my-sm-0" type="button" @click="showAddTaskModal">Logout</button>
-              </form>
-            </nav>
-            <ul class="list-group">
-              <li class="list-group-item list-group-item-action active d-flex justify-content-between align-items-center">
-                Cras justo odio
-                <div class="checker"><span class=""><input type="checkbox"></span></div>
-              </li>
-              <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                Dapibus ac facilisis in
-                <div class="checker"><span class=""><input type="checkbox"></span></div>
-              </li>
-              <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                Morbi leo risus
-                <div class="checker"><span class=""><input type="checkbox"></span></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div>
+    <v-card
+    class="mx-auto"
+    max-width="700"
+  >
+    <v-toolbar
+      color="blue-grey"
+      dark
+    >
+
+      <AddTask/>
+
+      <v-tabs v-model="activeTab">
+        <v-tab>All</v-tab>
+        <v-tab>Completed</v-tab>
+      </v-tabs>
+
+      <v-spacer></v-spacer>
+      <FormInput
+        v-model="value"
+        name="search"
+        label=""
+        type="text"
+        :value="value"
+        style="background-color: #d0cdcd;
+    padding: 5px;"
+      />
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+      <v-btn
+      color="error"
+    >
+      Logout
+    </v-btn>
+    </v-toolbar>
+
+    <v-list two-line>
+      <v-list
+        active-class="blue-grey lighten-5"
+      >
+        <template v-for="(item, key, index) in filteredTodoItems">
+            <v-list-item :key="item.title">
+              <v-list-item-avatar>
+                    <v-img :src="item.image"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title" :style="{'text-decoration': item.checked ? 'line-through' : ''}"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+
+                <v-checkbox
+                    v-model="item.checked"
+                  color="secondary"
+                ></v-checkbox>
+              </v-list-item-action>
+              <v-btn class="ml-4" icon @click="showMore(key)">
+                <v-icon>{{ mdiDotsHorizontal }}</v-icon>
+              </v-btn>
+              <v-btn
+                  v-if="item.moreButtons"
+                  class="ml-4" text
+                  icon
+                  color="red lighten-2"
+                  @click="deleteItem(key)"
+              >
+                <v-icon>{{ mdiDelete }}</v-icon>
+              </v-btn>
+              <v-btn
+                  v-if="item.moreButtons"
+                  class="ml-4" text
+                  icon
+                  color="red lighten-2">
+                <v-icon>{{ mdiBorderColor }}</v-icon>
+              </v-btn>
+          </v-list-item>
+          <v-divider
+            v-if="index < filteredTodoItems.length - 1"
+            :key="index"
+          ></v-divider>
+        </template>
+      </v-list>
+    </v-list>
+  </v-card>
   </div>
+
 </template>
 
 <script>
+import FormInput from "@/components/auth/FormInput.vue";
 import AddTask from "@/components/todo/AddTask.vue";
+import {mdiBorderColor, mdiDelete, mdiDotsHorizontal} from '@mdi/js';
+import { mapState } from 'vuex';
 
 export default {
   name: "Todos",
   components: {
+    FormInput,
     AddTask
   },
   data() {
     return {
-      showModal: false
+      activeTab: 0,
+      mdiDotsHorizontal: mdiDotsHorizontal,
+      mdiDelete: mdiDelete,
+      mdiBorderColor: mdiBorderColor,
+      value: '',
+      moreButtons: false
+    }
+  },
+  computed: {
+    ...mapState({
+      items: state => state.todosItems
+    }),
+    filteredTodoItems() {
+      if (this.activeTab === 1) {
+        return Object.fromEntries(Object.entries(this.items).filter(item => item[1].checked === true))
+      }
+      return this.items
     }
   },
   methods: {
-    showAddTaskModal() {
-      this.showModal = true;
+    showMore(key) {
+      Object.keys(this.items).forEach(item => {
+        if (item === key) {
+          this.items[item].moreButtons = !this.items[item].moreButtons;
+        } else {
+          this.items[item].moreButtons = false;
+        }
+      })
     },
-    close() {
-      this.showModal = false;
+    deleteItem(key) {
+      this.$store.commit('REMOVE_FROM_TODO_ITEM', key)
     }
+  },
+  mounted() {
+    let res = {
+             1: {
+          action: '15 min',
+          image: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+          subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+          title: 'Ali Connors',
+          moreButtons: false,
+          checked: false
+        },
+        2: {
+          action: '2 hr',
+          image: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+          subtitle: `Wish I could come, but I'm out of town this weekend.`,
+          title: 'me, Scrott, Jennifer',
+          moreButtons: false,
+          checked: false
+        },
+        3: {
+          action: '6 hr',
+          image: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+          subtitle: 'Do you have Paris recommendations? Have you ever been?',
+          title: 'Sandra Adams',
+          moreButtons: false,
+          checked: false
+        },
+        4: {
+          action: '12 hr',
+          image: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+          subtitle: 'Have any ideas about what we should get Heidi for her birthday?',
+          title: 'Trevor Hansen',
+          moreButtons: false,
+          checked: false
+        },
+        5: {
+          action: '18hr',
+          image: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
+          subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+          title: 'Britta Holt',
+          moreButtons: false,
+          checked: false
+        }
+    }
+    this.$store.commit('SET_TODO_ITEM', res)
   }
 }
 </script>
 
 <style scoped>
-body{
-    margin-top:20px;
-    background: #f8f8f8;
-}
-
-.todo-nav {
-    margin-top: 10px
-}
-
-.todo-list {
-    margin: 10px 0
-}
-
-.todo-list .todo-item {
-    margin: 5px 0;
-    border-radius: 0;
-    background: #f7f7f7
-}
-
-.todo-list.only-active .todo-item.complete {
-    display: none
-}
-
-.todo-list.only-active .todo-item:not(.complete) {
-    display: block
-}
-
-.todo-list.only-complete .todo-item:not(.complete) {
-    display: none
-}
-
-.todo-list.only-complete .todo-item.complete {
-    display: block
-}
-
-.todo-list .todo-item.complete span {
-    text-decoration: line-through
-}
-
-.remove-todo-item {
-    color: #ccc;
-    visibility: hidden
-}
-
-.remove-todo-item:hover {
-    color: #5f5f5f
-}
-
-.todo-item:hover .remove-todo-item {
-    visibility: visible
-}
-
-div.checker {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-}
-
-div.checker input,
-div.checker span {
-    width: 18px;
-    height: 18px
-}
-
-div.checker span {
-    display: -moz-inline-box;
-    display: inline-block;
-    zoom: 1;
-    text-align: center;
-    background-position: 0 -260px;
-}
-
-div.checker, div.checker input, div.checker span {
-    width: 19px;
-    height: 19px;
-}
-
-div.checker, div.radio, div.uploader {
-    position: relative;
-}
-
-div.button, div.button *, div.checker, div.checker *, div.radio, div.radio *, div.selector, div.selector *, div.uploader, div.uploader * {
-    margin: 0;
-    padding: 0;
-}
-
-div.button, div.checker, div.radio, div.selector, div.uploader {
-    display: -moz-inline-box;
-    display: inline-block;
-    zoom: 1;
-    vertical-align: middle;
-}
-
-.card {
-    padding: 25px;
-    margin-bottom: 20px;
-    border: initial;
-    background: #fff;
-    border-radius: calc(.15rem - 1px);
-    box-shadow: 0 1px 15px rgba(0,0,0,0.04), 0 1px 6px rgba(0,0,0,0.04);
-}
 </style>
