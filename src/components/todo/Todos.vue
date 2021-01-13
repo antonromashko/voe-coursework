@@ -19,7 +19,7 @@
               </v-list-item-content>
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                <v-checkbox v-model="item.checked" color="secondary"></v-checkbox>
+                <v-checkbox v-model="item.checked" color="secondary" @change="todoItemChange"></v-checkbox>
               </v-list-item-action>
               <v-btn class="ml-4" icon @click="showMore(key)">
                 <v-icon>{{ mdiDotsHorizontal }}</v-icon>
@@ -103,18 +103,15 @@ export default {
     deleteItem(key) {
       this.$store.commit('REMOVE_FROM_TODO_ITEM', key);
     },
+    todoItemChange() {
+      this.$store.commit('SET_TODO_ITEM', this.items);
+    }
   },
   created() {
     const user = localStorage.getItem('logged_in')
     //
     this.$store.commit('SET_LOGIN_USER', user);
     this.$store.commit('SET_TODO_ITEM', JSON.parse(localStorage.getItem(user)).todos)
-  },
-  beforeDestroy() {
-    console.log('beforeDestroy')
-    const data = JSON.parse(localStorage.getItem(this.loggedInUser));
-    data['todos'] = this.items;
-    localStorage.setItem(this.loggedInUser, JSON.stringify(data));
   }
 }
 </script>
