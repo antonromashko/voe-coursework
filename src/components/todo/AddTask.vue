@@ -1,14 +1,13 @@
 <template>
   <v-menu v-model="menu" :close-on-content-click="closeOnContentClick" :nudge-width="200"
       offset-x>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn icon v-bind="attrs" v-on="on">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
+    <template #activator="{ on, attrs }">
+      <slot name="activator" :on="on" :attrs="attrs"></slot>
     </template>
+
     <v-card
     class="mx-auto"
-    max-width="500"
+    max-width="600"
     tile
   >
     <v-list dense>
@@ -22,7 +21,7 @@
         <v-divider></v-divider>
         <v-form v-model="valid">
           <v-list-item
-          v-for="(item, key) in items"
+          v-for="(item, key) in newItems"
           :key="key"
         >
           <v-list-item-content>
@@ -62,31 +61,38 @@
 
 <script>
 
+import { mapState } from "vuex";
+
 export default {
   name: "AddTask",
+  props: {
+    itemKey: {
+      default: false
+    }
+  },
   data() {
     return {
       menu: false,
       closeOnContentClick: false,
-      items: {
+      newItems: {
           name: {
             label: 'NAME',
             value: '',
             type: 'text',
-            counter: 10,
+            counter: 30,
             rules: [
               v => !!v || 'Name is required',
-              v => v.length <= 10 || 'Name must be less than 10 characters',
+              v => v.length <= 30 || 'Name must be less than 10 characters',
             ],
           },
           description: {
             label: 'DESCRIPTION',
             value: '',
             type: 'text',
-            counter: 20,
+            counter: 50,
             rules: [
               v => !!v || 'Name is required',
-              v => v.length <= 20 || 'Name must be less than 10 characters',
+              v => v.length <= 50 || 'Name must be less than 10 characters',
             ],
           },
           image: {
@@ -101,21 +107,36 @@ export default {
       valid: false
     }
   },
+  computed: {
+    ...mapState({
+      items: state => state.todosItems
+    })
+  },
   methods: {
     saveItem() {
+      let indexTs = new Date()
       this.menu = false;
       let res = {
-        [new Date().getTime()]: {
-          action: '15 min',
-          image: this.items.image.value,
-          subtitle: this.items.description.value,
-          title: this.items.name.value,
+        [this.itemKey || indexTs.getTime().toString()]: {
+          action: indexTs.toLocaleString(),
+          image: this.newItems.image.value,
+          description: this.newItems.description.value,
+          name: this.newItems.name.value,
           moreButtons: false,
           checked: false
         }
       }
+      console.log(this.items[this.itemKey], 'itemKey')
+      if (this.itemKey) {
+        this.$store.commit('REMOVE_FROM_TODO_ITEM', this.itemKey)
+      }
       this.$store.commit('SET_TODO_ITEM', res)
     }
+  },
+  mounted() {
+      if (this.itemKey) {
+        Object.keys(this.newItems).forEach(key => this.newItems[key].value = this.items[this.itemKey][key])
+      }
   }
 }
 </script>

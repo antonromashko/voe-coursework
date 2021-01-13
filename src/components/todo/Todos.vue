@@ -9,7 +9,13 @@
       dark
     >
 
-      <AddTask/>
+      <AddTask>
+        <template #activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+      </AddTask>
 
       <v-tabs v-model="activeTab">
         <v-tab>All</v-tab>
@@ -41,13 +47,13 @@
         active-class="blue-grey lighten-5"
       >
         <template v-for="(item, key, index) in filteredTodoItems">
-            <v-list-item :key="item.title">
+            <v-list-item :key="item.name">
               <v-list-item-avatar>
                     <v-img :src="item.image"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title v-text="item.title" :style="{'text-decoration': item.checked ? 'line-through' : ''}"></v-list-item-title>
-                <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+                <v-list-item-title v-text="item.name" :style="{'text-decoration': item.checked ? 'line-through' : ''}"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
@@ -69,13 +75,19 @@
               >
                 <v-icon>{{ mdiDelete }}</v-icon>
               </v-btn>
-              <v-btn
-                  v-if="item.moreButtons"
-                  class="ml-4" text
-                  icon
-                  color="red lighten-2">
-                <v-icon>{{ mdiBorderColor }}</v-icon>
-              </v-btn>
+              <AddTask v-if="item.moreButtons" :itemKey="key">
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                      v-bind="attrs" v-on="on"
+                      class="ml-4"
+                      text
+                      icon
+                      color="red lighten-2"
+                  >
+                    <v-icon>{{ mdiBorderColor }}</v-icon>
+                  </v-btn>
+                </template>
+              </AddTask>
           </v-list-item>
           <v-divider
             v-if="index < filteredTodoItems.length - 1"
@@ -93,7 +105,7 @@
 import FormInput from "@/components/auth/FormInput.vue";
 import AddTask from "@/components/todo/AddTask.vue";
 import {mdiBorderColor, mdiDelete, mdiDotsHorizontal} from '@mdi/js';
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
   name: "Todos",
@@ -139,42 +151,42 @@ export default {
   mounted() {
     let res = {
              1: {
-          action: '15 min',
+          action: new Date().toLocaleString(),
           image: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-          title: 'Ali Connors',
+          description: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+          name: 'Ali Connors',
           moreButtons: false,
           checked: false
         },
         2: {
-          action: '2 hr',
+          action: new Date().toLocaleString(),
           image: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          subtitle: `Wish I could come, but I'm out of town this weekend.`,
-          title: 'me, Scrott, Jennifer',
+          description: `Wish I could come, but I'm out of town this weekend.`,
+          name: 'me, Scrott, Jennifer',
           moreButtons: false,
           checked: false
         },
         3: {
-          action: '6 hr',
+          action: new Date().toLocaleString(),
           image: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          subtitle: 'Do you have Paris recommendations? Have you ever been?',
-          title: 'Sandra Adams',
+          description: 'Do you have Paris recommendations? Have you ever been?',
+          name: 'Sandra Adams',
           moreButtons: false,
           checked: false
         },
         4: {
-          action: '12 hr',
+          action: new Date().toLocaleString(),
           image: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          subtitle: 'Have any ideas about what we should get Heidi for her birthday?',
-          title: 'Trevor Hansen',
+          description: 'Have any ideas about what we should get Heidi for her birthday?',
+          name: 'Trevor Hansen',
           moreButtons: false,
           checked: false
         },
         5: {
-          action: '18hr',
+          action: new Date().toLocaleString(),
           image: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-          title: 'Britta Holt',
+          description: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+          name: 'Britta Holt',
           moreButtons: false,
           checked: false
         }
