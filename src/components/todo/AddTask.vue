@@ -123,7 +123,8 @@ export default {
           description: this.newItems.description.value,
           name: this.newItems.name.value,
           moreButtons: false,
-          checked: false
+          checked: false,
+          edited: !!this.itemKey
         }
       }
       console.log(this.items[this.itemKey], 'itemKey')

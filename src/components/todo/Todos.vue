@@ -52,6 +52,7 @@
                     <v-img :src="item.image"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
+                <v-list-item-action-text v-if="item.edited" v-text="'edited'"></v-list-item-action-text>
                 <v-list-item-title v-text="item.name" :style="{'text-decoration': item.checked ? 'line-through' : ''}"></v-list-item-title>
                 <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
               </v-list-item-content>
@@ -155,7 +156,8 @@ export default {
           description: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
           name: 'Ali Connors',
           moreButtons: false,
-          checked: false
+          checked: false,
+               edited: false
         },
         2: {
           action: new Date().toLocaleString(),
@@ -163,6 +165,7 @@ export default {
           description: `Wish I could come, but I'm out of town this weekend.`,
           name: 'me, Scrott, Jennifer',
           moreButtons: false,
+          edited: false,
           checked: false
         },
         3: {
@@ -171,7 +174,8 @@ export default {
           description: 'Do you have Paris recommendations? Have you ever been?',
           name: 'Sandra Adams',
           moreButtons: false,
-          checked: false
+          checked: false,
+          edited: false
         },
         4: {
           action: new Date().toLocaleString(),
@@ -179,7 +183,8 @@ export default {
           description: 'Have any ideas about what we should get Heidi for her birthday?',
           name: 'Trevor Hansen',
           moreButtons: false,
-          checked: false
+          checked: false,
+          edited: false
         },
         5: {
           action: new Date().toLocaleString(),
@@ -187,7 +192,8 @@ export default {
           description: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
           name: 'Britta Holt',
           moreButtons: false,
-          checked: false
+          checked: false,
+          edited: false
         }
     }
     this.$store.commit('SET_TODO_ITEM', res)
