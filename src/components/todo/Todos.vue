@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="700">
-      <ToolBar/>
+      <ToolBar @changeTab="changeTab"/>
       <v-list two-line>
         <v-list active-class="blue-grey lighten-5">
           <template v-for="(item, key, index) in filteredTodoItems">
@@ -63,6 +63,7 @@ import ToolBar from "@/components/todo/ToolBar.vue";
 import AddTask from "@/components/todo/AddTask.vue";
 import { mdiBorderColor, mdiDelete, mdiDotsHorizontal } from '@mdi/js';
 import { mapState } from 'vuex';
+import { ROUTER } from "@/const";
 
 export default {
   name: "Todos",
@@ -105,6 +106,10 @@ export default {
     },
     todoItemChange() {
       this.$store.commit('SET_TODO_ITEM', this.items);
+    },
+    changeTab(val) {
+      this.activeTab = val;
+      this.$router.push(this.activeTab === 0 ? ROUTER.TODOS : ROUTER.TODOS_COMPLETED)
     }
   },
   created() {

@@ -1,5 +1,6 @@
 export const ROUTER = {
   TODOS: '/todos',
+  TODOS_COMPLETED: '/todos-completed',
   REGISTRATION: '/registration',
   AUTH: '/auth'
 }
