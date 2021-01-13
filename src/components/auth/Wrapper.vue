@@ -13,7 +13,7 @@
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!valid" @click="$emit('click')">{{ currentButtonName }}</v-btn>
+          <v-btn :disabled="!valid" @click="$emit('click', formData)">{{ currentButtonName }}</v-btn>
         </v-card-actions>
     </form>
   </div>
@@ -34,7 +34,7 @@ export default {
       default: 'SAVE'
     },
     formData: {
-      type: Array,
+      type: [Array, Object],
       required: true
     }
   },

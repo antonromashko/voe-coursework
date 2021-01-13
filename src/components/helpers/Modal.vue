@@ -43,7 +43,6 @@ export default {
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: 999;
 
   .modal-content {
     display: flex;

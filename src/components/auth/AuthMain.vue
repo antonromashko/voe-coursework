@@ -1,16 +1,31 @@
 <template>
-  <Modal>
-    <template #header>
-      <div id="nav">
-      | <router-link to="/auth">Sign in</router-link>
-      | <router-link to="/registration">Sign up</router-link> |
-      </div>
-    </template>
-    <template #content>
-      <Auth v-if="$route.name === 'Auth'"/>
-      <Registration v-if="$route.name === 'Registration'" />
-    </template>
-  </Modal>
+  <div>
+    <Modal>
+      <template #header>
+        <div id="nav">
+          |
+          <router-link to="/auth">Sign in</router-link>
+          |
+          <router-link to="/registration">Sign up</router-link>
+          |
+        </div>
+      </template>
+      <template #content>
+        <Auth v-if="$route.name === 'Auth'" @login="login"/>
+        <Registration v-if="$route.name === 'Registration'"/>
+      </template>
+    </Modal>
+    <v-alert
+        color="red"
+        type="error"
+        dismissible
+        max-width="350"
+        :value="alert"
+    >
+      Check username and password
+    </v-alert>
+  </div>
+
 </template>
 
 <script>
@@ -28,7 +43,18 @@ export default {
   data() {
     return {
       showModal: true,
-      isRegistered: true
+      isRegistered: true,
+      alert: false
+    }
+  },
+  methods: {
+    login(logged) {
+      if (!logged) {
+        this.alert = true;
+        setTimeout(()=>{
+          this.alert=false
+        },5000)
+      }
     }
   },
   mounted() {

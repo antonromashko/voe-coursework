@@ -82,10 +82,7 @@ export default {
           image: {
             label: 'IMAGE',
             value: '',
-            type: 'text',
-            rules: [
-              v => !!v || 'Image is required',
-            ],
+            type: 'text'
           },
         },
       valid: false

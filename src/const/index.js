@@ -1,3 +1,9 @@
+export const ROUTER = {
+  TODOS: '/todos',
+  REGISTRATION: '/registration',
+  AUTH: '/auth'
+}
+
 export const RULES = {
   NAME: {
     counter: 20,
@@ -16,11 +22,10 @@ export const RULES = {
   EMAIL: {
     counter: 20,
     rules: [
-      v => !!v || 'Email is required',
-      v => (!!v && v.length <= 20) || 'Password must be less than 20 characters',
+      v => (!v || v.length <= 20) || 'Password must be less than 20 characters',
       v => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(v).toLowerCase()) || 'Invalid email address';
+        return (!v || re.test(String(v).toLowerCase())) || 'Invalid email address';
       }
     ]
   },
@@ -34,7 +39,6 @@ export const RULES = {
   DESCRIPTION: {
     counter: 50,
     rules: [
-      v => !!v || 'Name is required',
       v => (!!v && v.length <= 50) || 'Name must be less than 50 characters',
     ]
   }

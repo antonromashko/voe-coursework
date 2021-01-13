@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    todosItems:  {}
+    todosItems:  {},
+    loggedInUser: false
   },
   mutations: {
     SET_TODO_ITEM (state, payload) {
@@ -15,6 +16,12 @@ export default new Vuex.Store({
       let tempItems = state.todosItems;
       delete tempItems[payload];
       state.todosItems = { ...tempItems };
+    },
+    SET_LOGIN_USER (state, payload) {
+      state.loggedInUser = payload
+    },
+    SET_LOGOUT_USER (state) {
+      state.loggedInUser = false
     }
   },
   getters: {

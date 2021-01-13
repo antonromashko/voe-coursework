@@ -1,68 +1,25 @@
 <template>
   <div>
-    <v-card
-    class="mx-auto"
-    max-width="700"
-  >
-    <v-toolbar
-      color="blue-grey"
-      dark
-    >
-
-      <AddTask>
-        <template #activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </template>
-      </AddTask>
-
-      <v-tabs v-model="activeTab">
-        <v-tab>To Do</v-tab>
-        <v-tab>Completed</v-tab>
-      </v-tabs>
-
-      <v-spacer></v-spacer>
-      <FormInput
-        v-model="value"
-        name="search"
-        label=""
-        type="text"
-        :value="value"
-        style="background-color: #d0cdcd;
-    padding: 5px;"
-      />
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-btn
-      color="error"
-    >
-      Logout
-    </v-btn>
-    </v-toolbar>
-
-    <v-list two-line>
-      <v-list
-        active-class="blue-grey lighten-5"
-      >
-        <template v-for="(item, key, index) in filteredTodoItems">
+    <v-card class="mx-auto" max-width="700">
+      <ToolBar/>
+      <v-list two-line>
+        <v-list active-class="blue-grey lighten-5">
+          <template v-for="(item, key, index) in filteredTodoItems">
             <v-list-item :key="item.name">
               <v-list-item-avatar>
-                    <v-img :src="item.image"></v-img>
+                <v-img :src="item.image"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-action-text v-if="item.edited" v-text="'edited'"></v-list-item-action-text>
-                <v-list-item-title v-text="item.name" :style="{'text-decoration': item.checked ? 'line-through' : ''}"></v-list-item-title>
+                <v-list-item-title
+                    v-text="item.name"
+                    :style="{'text-decoration': item.checked ? 'line-through' : ''}">
+                </v-list-item-title>
                 <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-
-                <v-checkbox
-                    v-model="item.checked"
-                  color="secondary"
-                ></v-checkbox>
+                <v-checkbox v-model="item.checked" color="secondary"></v-checkbox>
               </v-list-item-action>
               <v-btn class="ml-4" icon @click="showMore(key)">
                 <v-icon>{{ mdiDotsHorizontal }}</v-icon>
@@ -89,21 +46,20 @@
                   </v-btn>
                 </template>
               </AddTask>
-          </v-list-item>
-          <v-divider
-            v-if="index < filteredTodoItems.length - 1"
-            :key="index"
-          ></v-divider>
-        </template>
+            </v-list-item>
+            <v-divider
+                v-if="index < filteredTodoItems.length - 1"
+                :key="index"
+            ></v-divider>
+          </template>
+        </v-list>
       </v-list>
-    </v-list>
-  </v-card>
+    </v-card>
   </div>
-
 </template>
 
 <script>
-import FormInput from "@/components/auth/FormInput.vue";
+import ToolBar from "@/components/todo/ToolBar.vue";
 import AddTask from "@/components/todo/AddTask.vue";
 import {mdiBorderColor, mdiDelete, mdiDotsHorizontal} from '@mdi/js';
 import {mapState} from 'vuex';
@@ -111,8 +67,8 @@ import {mapState} from 'vuex';
 export default {
   name: "Todos",
   components: {
-    FormInput,
-    AddTask
+    AddTask,
+    ToolBar
   },
   data() {
     return {
@@ -120,7 +76,6 @@ export default {
       mdiDotsHorizontal: mdiDotsHorizontal,
       mdiDelete: mdiDelete,
       mdiBorderColor: mdiBorderColor,
-      value: '',
       moreButtons: false
     }
   },
@@ -146,7 +101,7 @@ export default {
     },
     deleteItem(key) {
       this.$store.commit('REMOVE_FROM_TODO_ITEM', key)
-    }
+    },
   },
   mounted() {
     let res = {
