@@ -95,7 +95,6 @@ export default {
     signUp(data) {
       localStorage.setItem(data.login.value, JSON.stringify(data));
       this.$store.commit('SET_LOGIN_USER', data.login.value)
-      localStorage.setItem('logged_in', this.loggedInUser);
       this.$router.push(ROUTER.TODOS)
     }
   }

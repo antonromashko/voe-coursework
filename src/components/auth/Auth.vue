@@ -64,7 +64,6 @@ export default {
       let loggedIn = userData && userData.login.value === this.formData.login.value && userData.password.value === this.formData.password.value
       if (loggedIn) {
         this.$store.commit('SET_LOGIN_USER', this.formData.login.value)
-        localStorage.setItem('logged_in', this.formData.login.value);
         this.$router.push(ROUTER.TODOS);
       }
       this.$emit('login', loggedIn)

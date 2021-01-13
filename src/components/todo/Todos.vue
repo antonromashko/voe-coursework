@@ -61,8 +61,8 @@
 <script>
 import ToolBar from "@/components/todo/ToolBar.vue";
 import AddTask from "@/components/todo/AddTask.vue";
-import {mdiBorderColor, mdiDelete, mdiDotsHorizontal} from '@mdi/js';
-import {mapState} from 'vuex';
+import { mdiBorderColor, mdiDelete, mdiDotsHorizontal } from '@mdi/js';
+import { mapState } from 'vuex';
 
 export default {
   name: "Todos",
@@ -81,7 +81,8 @@ export default {
   },
   computed: {
     ...mapState({
-      items: state => state.todosItems
+      items: state => state.todosItems,
+      loggedInUser: state => state.loggedInUser
     }),
     filteredTodoItems() {
       return Object.fromEntries(Object.entries(this.items).filter(item => {
@@ -100,58 +101,20 @@ export default {
       })
     },
     deleteItem(key) {
-      this.$store.commit('REMOVE_FROM_TODO_ITEM', key)
+      this.$store.commit('REMOVE_FROM_TODO_ITEM', key);
     },
   },
-  mounted() {
-    let res = {
-             1: {
-          action: new Date().toLocaleString(),
-          image: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          description: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-          name: 'Ali Connors',
-          moreButtons: false,
-          checked: false,
-               edited: false
-        },
-        2: {
-          action: new Date().toLocaleString(),
-          image: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          description: `Wish I could come, but I'm out of town this weekend.`,
-          name: 'me, Scrott, Jennifer',
-          moreButtons: false,
-          edited: false,
-          checked: false
-        },
-        3: {
-          action: new Date().toLocaleString(),
-          image: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          description: 'Do you have Paris recommendations? Have you ever been?',
-          name: 'Sandra Adams',
-          moreButtons: false,
-          checked: false,
-          edited: false
-        },
-        4: {
-          action: new Date().toLocaleString(),
-          image: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          description: 'Have any ideas about what we should get Heidi for her birthday?',
-          name: 'Trevor Hansen',
-          moreButtons: false,
-          checked: false,
-          edited: false
-        },
-        5: {
-          action: new Date().toLocaleString(),
-          image: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          description: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-          name: 'Britta Holt',
-          moreButtons: false,
-          checked: false,
-          edited: false
-        }
-    }
-    this.$store.commit('SET_TODO_ITEM', res)
+  created() {
+    const user = localStorage.getItem('logged_in')
+    //
+    this.$store.commit('SET_LOGIN_USER', user);
+    this.$store.commit('SET_TODO_ITEM', JSON.parse(localStorage.getItem(user)).todos)
+  },
+  beforeDestroy() {
+    console.log('beforeDestroy')
+    const data = JSON.parse(localStorage.getItem(this.loggedInUser));
+    data['todos'] = this.items;
+    localStorage.setItem(this.loggedInUser, JSON.stringify(data));
   }
 }
 </script>
