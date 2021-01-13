@@ -18,7 +18,7 @@
       </AddTask>
 
       <v-tabs v-model="activeTab">
-        <v-tab>All</v-tab>
+        <v-tab>To Do</v-tab>
         <v-tab>Completed</v-tab>
       </v-tabs>
 
@@ -128,10 +128,9 @@ export default {
       items: state => state.todosItems
     }),
     filteredTodoItems() {
-      if (this.activeTab === 1) {
-        return Object.fromEntries(Object.entries(this.items).filter(item => item[1].checked === true))
-      }
-      return this.items
+      return Object.fromEntries(Object.entries(this.items).filter(item => {
+        return this.activeTab === 1 ? item[1].checked === true : item[1].checked === false
+      }))
     }
   },
   methods: {
