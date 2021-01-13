@@ -1,61 +1,45 @@
 <template>
-  <v-menu v-model="menu" :close-on-content-click="closeOnContentClick" :nudge-width="200"
-      offset-x>
+  <v-menu
+      v-model="menu"
+      :close-on-content-click="closeOnContentClick"
+      :nudge-width="200"
+      offset-x
+  >
     <template #activator="{ on, attrs }">
       <slot name="activator" :on="on" :attrs="attrs"></slot>
     </template>
-
-    <v-card
-    class="mx-auto"
-    max-width="600"
-    tile
-  >
-    <v-list dense>
-      <v-list-item-group
-        color="primary"
-        class="spacing-playground pa-6"
-      >
-        <v-subheader>
-          NEW TODO
-        </v-subheader>
-        <v-divider></v-divider>
-        <v-form v-model="valid">
-          <v-list-item
-          v-for="(item, key) in newItems"
-          :key="key"
-        >
-          <v-list-item-content>
-            <v-text-field
-            v-model="item.value"
-            :rules="item.rules"
-            :counter="item.counter"
-            :label="item.label"
-            required
-          ></v-text-field>
-          </v-list-item-content>
-        </v-list-item>
-        </v-form>
-      </v-list-item-group>
-    </v-list>
+    <v-card class="mx-auto" max-width="600" tile>
+      <v-list dense>
+        <v-list-item-group color="primary" class="spacing-playground pa-6">
+          <v-subheader>
+            NEW TODO
+          </v-subheader>
+          <v-divider></v-divider>
+          <v-form v-model="valid">
+            <v-list-item v-for="(item, key) in newItems" :key="key">
+              <v-list-item-content>
+                <v-text-field
+                    v-model="item.value"
+                    :rules="item.rules"
+                    :counter="item.counter"
+                    :label="item.label"
+                    required
+                ></v-text-field>
+              </v-list-item-content>
+            </v-list-item>
+          </v-form>
+        </v-list-item-group>
+      </v-list>
       <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            text
-            @click="menu = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            :disabled="!valid"
-            color="primary"
-            text
-            @click="saveItem"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-  </v-card>
+        <v-spacer></v-spacer>
+        <v-btn text @click="menu = false">
+          Cancel
+        </v-btn>
+        <v-btn :disabled="!valid" color="primary" text @click="saveItem">
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-menu>
 </template>
 
@@ -91,8 +75,8 @@ export default {
             type: 'text',
             counter: 50,
             rules: [
-              v => !!v || 'Name is required',
-              v => v.length <= 50 || 'Name must be less than 10 characters',
+              v => !!v || 'Description is required',
+              v => v.length <= 50 || 'Description must be less than 10 characters',
             ],
           },
           image: {
@@ -100,7 +84,7 @@ export default {
             value: '',
             type: 'text',
             rules: [
-              v => !!v || 'Name is required',
+              v => !!v || 'Image is required',
             ],
           },
         },

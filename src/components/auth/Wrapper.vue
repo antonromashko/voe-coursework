@@ -4,10 +4,17 @@
       <header>
         <slot name="title"></slot>
       </header>
-      <template>
-        <slot v-for="item in formData" :name="item.name" :[item.name]="item"></slot>
-      </template>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="button" :disabled="isPending" @click="$emit('click')">{{ currentButtonName }}</button>
+        <v-form v-model="valid">
+          <v-list-item v-for="(item, key) in formData" :key="key">
+            <v-list-item-content>
+              <slot :name="item.name" :[item.name]="item"></slot>
+            </v-list-item-content>
+          </v-list-item>
+        </v-form>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :disabled="!valid" @click="$emit('click')">{{ currentButtonName }}</v-btn>
+        </v-card-actions>
     </form>
   </div>
 </template>
@@ -18,7 +25,8 @@ export default {
   data() {
     return {
       pendingButton: 'Sending...',
-      isPending: false
+      isPending: false,
+      valid: false
     }
   },
   props: {
@@ -61,26 +69,6 @@ form {
     align-items: center;
     display: flex;
     justify-content: left;
-    ::v-deep{
-      label {
-        width: 40%;
-        padding: 10px;
-      }
-      input {
-        border-style: solid;
-        border-color: rgba(3, 3, 3, 0.12);
-        border-radius: 3px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-        width: 50%;
-        padding: 5px;
-      }
-    }
     div {
       padding: 10px;
     }

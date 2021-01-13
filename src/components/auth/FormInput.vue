@@ -1,21 +1,27 @@
 <template>
   <transition name="formTransition" appear>
-    <div class="input-group m-1 p-2">
-      <div class="input-group-prepend" style="width: 120px;">
-        <span class="input-group-text w-100">{{ label }}</span>
-      </div>
-      <input
-          class="form-control"
-          :type="type"
-          :value="value"
-          @input="$emit('input', $event.target.value, name)">
-    </div>
+      <v-text-field
+        :counter="counter"
+        :label="label"
+        :type="type"
+        :rules="rules"
+        required
+        @input="input"
+      ></v-text-field>
   </transition>
 </template>
 
 <script>
 export default {
   name: "FormInput",
+  // data() {
+  //   return {
+  //     rules: [
+  //             v => !!v || 'Name is required',
+  //             // v => v.length <= 50 || 'Name must be less than 50 characters'
+  //           ]
+  //   }
+  // },
   props: {
     label: {
       type: String,
@@ -31,6 +37,19 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    counter: {
+      type: Number,
+      default: 10
+    },
+    rules: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    input(value) {
+      this.$emit('input', value, name)
     }
   }
 }
@@ -48,16 +67,4 @@ export default {
     opacity: 0;
   }
 }
-  label {
-    display: flex;
-    padding: 10px;
-    font-size: 20px;
-    font-weight: 500;
-    input {
-      max-width: 150px;
-      min-width: 70px;
-      width: 100px;
-      padding: 5px;
-    }
-  }
 </style>
