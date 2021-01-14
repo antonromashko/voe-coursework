@@ -2,7 +2,13 @@
   <div>
     <v-card class="mx-auto" max-width="700">
       <ToolBar @search="searchTodo"/>
-      <v-list two-line>
+      <v-list-item-subtitle
+          v-if="Object.keys(filteredTodoItems).length === 0"
+          v-text="'No data'"
+          class="font-weight-medium text-center text-md-body-1"
+      >
+      </v-list-item-subtitle>
+      <v-list v-else two-line>
         <v-list active-class="blue-grey lighten-5">
           <template v-for="(item, key, index) in filteredTodoItems">
             <todo-item
@@ -29,7 +35,10 @@
               <template #action>
                 <v-list-item-action>
                   <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                  <v-checkbox v-model="item.checked" color="secondary" @change="todoItemChange(item)"></v-checkbox>
+                  <div class="task-action-box">
+                    <span class="task-badge" :class="item.taskColor"></span>
+                    <v-checkbox v-model="item.checked" color="secondary" @change="todoItemChange(item)"></v-checkbox>
+                  </div>
                 </v-list-item-action>
               </template>
             </todo-item>
@@ -123,3 +132,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.task-action-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .task-badge {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+  }
+}
+</style>

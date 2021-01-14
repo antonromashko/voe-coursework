@@ -19,12 +19,18 @@
             <v-list-item v-for="(item, key) in newItems" :key="key">
               <v-list-item-content>
                 <v-text-field
+                    v-if="item.type === 'text'"
                     v-model="item.value"
                     :rules="item.rules"
                     :counter="item.counter"
                     :label="item.label"
                     required
                 ></v-text-field>
+                <v-radio-group v-if="item.type === 'radio'" v-model="item.value" row>
+                  <v-radio color="success" value="success"></v-radio>
+                  <v-radio color="warning" value="warning"></v-radio>
+                  <v-radio color="red" value="red"></v-radio>
+                </v-radio-group>
               </v-list-item-content>
             </v-list-item>
           </v-form>
@@ -44,8 +50,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { RULES } from "@/const";
+import {mapState} from "vuex";
+import {RULES} from "@/const";
 
 export default {
   name: "AddTask",
@@ -80,6 +86,11 @@ export default {
             counter: RULES.IMAGE.counter,
             rules: RULES.IMAGE.rules
           },
+        color: {
+            label: 'COLOR',
+            value: '',
+            type: 'radio'
+          },
         },
       valid: false
     }
@@ -103,7 +114,8 @@ export default {
           name: this.newItems.name.value,
           moreButtons: false,
           checked: this.itemKey && this.items[this.itemKey].checked,
-          edited: !!this.itemKey
+          edited: !!this.itemKey,
+          taskColor: this.newItems.color.value
         }
       }
       if (this.itemKey) {
@@ -126,3 +138,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+::v-deep {
+  .v-input--radio-group__input {
+    justify-content: center;
+  }
+  .v-input--selection-controls.v-input {
+    flex: 1 1 auto;
+  }
+}
+</style>

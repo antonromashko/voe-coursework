@@ -12,23 +12,17 @@
       <v-tab>Completed</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
-    <v-text-field
-        v-model="searchValue"
-        label="search"
-    ></v-text-field>
-    <v-btn icon>
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
-    <v-btn icon color="error" @click="logoutUser">
-          <v-icon>{{ logoutIcon }}</v-icon>
-        </v-btn>
+    <v-text-field v-model="searchValue" label="search"></v-text-field>
+    <v-btn icon><v-icon>mdi-magnify</v-icon></v-btn>
+    <v-btn icon to="/history"><v-icon>mdi-domain</v-icon></v-btn>
+    <v-btn icon color="error" @click="logoutUser"><v-icon>{{ logoutIcon }}</v-icon></v-btn>
   </v-toolbar>
 </template>
 
 <script>
 import AddTask from "@/components/todo/AddTask.vue";
-import { ROUTER } from "@/const";
-import { mdiAccountArrowLeftOutline } from '@mdi/js';
+import {ROUTER} from "@/const";
+import {mdiAccountArrowLeftOutline} from '@mdi/js';
 
 export default {
   name: "ToolBar",

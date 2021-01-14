@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/auth'
+    redirect: '/todos'
   },
   {
     path: '/registration',
@@ -66,10 +66,16 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    let isLogged = !!localStorage.getItem('logged_in') || !!store.state.loggedInUser
-    if (['/auth', '/registration', '/history'].includes(to.fullPath) || (to.matched.some(item => item.meta.requiresLogin) && isLogged )) {
-       return next()
-    } else next("/auth")
+  let isLogged = !!localStorage.getItem('logged_in') || !!store.state.loggedInUser
+  if (to.matched.some(record => record.meta.requiresLogin)) {
+    if (!isLogged) {
+      next("/auth")
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
