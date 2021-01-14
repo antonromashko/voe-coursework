@@ -29,7 +29,7 @@
               <template #action>
                 <v-list-item-action>
                   <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
-                  <v-checkbox v-model="item.checked" color="secondary" @change="todoItemChange"></v-checkbox>
+                  <v-checkbox v-model="item.checked" color="secondary" @change="todoItemChange(item)"></v-checkbox>
                 </v-list-item-action>
               </template>
             </todo-item>
@@ -68,7 +68,8 @@ export default {
     ...mapState({
       items: state => state.todosItems,
       loggedInUser: state => state.loggedInUser,
-      activeTab: state => state.activeTab
+      activeTab: state => state.activeTab,
+      history: state => state.historyData
     }),
     filteredTodoItems() {
       return Object.fromEntries(Object.entries(this.items).filter(item => {
@@ -89,10 +90,25 @@ export default {
       })
     },
     deleteItem(key) {
+      let name = this.items[key].name
       this.$store.commit('REMOVE_FROM_TODO_ITEM', key);
+      this.$store.commit('SET_HISTORY_ROW', [{
+        user: this.loggedInUser,
+        action: 'delete',
+        moment: new Date().toLocaleString(),
+        name: name
+      }])
+      localStorage.setItem('history', JSON.stringify(this.history))
     },
-    todoItemChange() {
+    todoItemChange(item) {
       this.$store.commit('SET_TODO_ITEM', this.items);
+      this.$store.commit('SET_HISTORY_ROW', [{
+        user: this.loggedInUser,
+        action: item.checked ? 'completed' : 'moved back in todo',
+        moment: new Date().toLocaleString(),
+        name: item.name
+      }])
+      localStorage.setItem('history', JSON.stringify(this.history))
     },
     searchTodo(val) {
       this.searchValue = val
@@ -103,9 +119,7 @@ export default {
     //
     this.$store.commit('SET_LOGIN_USER', user);
     this.$store.commit('SET_TODO_ITEM', JSON.parse(localStorage.getItem(user)).todos);
+    this.$store.commit('SET_HISTORY_ROW', JSON.parse(localStorage.getItem('history')))
   }
 }
 </script>
-
-<style scoped>
-</style>

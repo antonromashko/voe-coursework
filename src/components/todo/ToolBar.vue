@@ -19,13 +19,16 @@
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
-    <v-btn color="error" @click="logoutUser">Logout</v-btn>
+    <v-btn icon color="error" @click="logoutUser">
+          <v-icon>{{ logoutIcon }}</v-icon>
+        </v-btn>
   </v-toolbar>
 </template>
 
 <script>
 import AddTask from "@/components/todo/AddTask.vue";
 import { ROUTER } from "@/const";
+import { mdiAccountArrowLeftOutline } from '@mdi/js';
 
 export default {
   name: "ToolBar",
@@ -36,7 +39,21 @@ export default {
     return {
       activeTab: 0,
       searchValue: '',
+      logoutIcon: mdiAccountArrowLeftOutline
     }
+  },
+  computed: {
+    adaptSearch () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return {}
+          case 'sm': return {}
+          case 'md': return {}
+          case 'lg': return {width: '200px'}
+          case 'xl': return {width: '200px'}
+          default:
+          throw {};
+        }
+      },
   },
   watch: {
     activeTab() {
@@ -71,7 +88,6 @@ export default {
   .v-text-field__details {
     height: 0;
     min-height: 0;
-    width: 200px;
   }
 }
 </style>

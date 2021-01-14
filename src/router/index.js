@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import P404 from "@/views/P404.vue";
 import AuthView from "@/views/AuthView.vue";
 import TodoView from "@/views/TodoView.vue";
+import History from "@/components/history/History.vue"
 import store from '@/store';
 
 Vue.use(VueRouter)
@@ -45,6 +46,14 @@ const routes = [
     meta: { requiresLogin: true }
   },
   {
+    path: '/history',
+    name: 'History',
+    components: {
+      Content: History
+    },
+    meta: { requiresLogin: false }
+  },
+  {
     path: '*',
     component: P404
   }
@@ -58,7 +67,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     let isLogged = !!localStorage.getItem('logged_in') || !!store.state.loggedInUser
-    if (['/auth', '/registration'].includes(to.fullPath) || (to.matched.some(item => item.meta.requiresLogin) && isLogged )) {
+    if (['/auth', '/registration', '/history'].includes(to.fullPath) || (to.matched.some(item => item.meta.requiresLogin) && isLogged )) {
        return next()
     } else next("/auth")
 })

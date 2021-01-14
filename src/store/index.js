@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     todosItems:  {},
     loggedInUser: false,
-    activeTab: 0
+    activeTab: 0,
+    historyData: []
   },
   mutations: {
     SET_TODO_ITEM (state, payload) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     },
     SET_ACTIVE_TAB (state, payload) {
       state.activeTab = payload;
+    },
+    SET_HISTORY_ROW (state, payload) {
+      state.historyData = [ ...state.historyData, ...payload ];
     }
   },
   getters: {

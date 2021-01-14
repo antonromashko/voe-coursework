@@ -56,6 +56,7 @@ form {
     margin: 8px;
   }
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -65,7 +66,6 @@ form {
     text-align: center;
   }
   div {
-    width: 500px;
     align-items: center;
     display: flex;
     justify-content: left;
@@ -73,5 +73,8 @@ form {
       padding: 10px;
     }
   }
+}
+form > div {
+  width: 100%
 }
 </style>

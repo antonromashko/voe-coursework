@@ -1,8 +1,9 @@
 <template>
-<div class="modal" :class="{'modal__visible': showModal}">
-  <div class="modal-content">
+<div class="modal" :class="{'modal__visible': showModal}" :style="adaptMain">
+  <div class="modal-content" :style="adaptModalSize">
     <div class="header">
       <slot name="header"></slot>
+      <slot name="alert"></slot>
       <span v-if="enableClose" class="close" @click="$emit('close')">&times;</span>
     </div>
     <div class="auth-content">
@@ -25,8 +26,49 @@ export default {
       default: false
     }
   },
+  computed: {
+    adaptModalSize () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return {
+            width: '100%',
+            height: '100%'
+          }
+          case 'sm': return {
+            width: '100%',
+            height: '100%'
+          }
+          case 'md': return {
+            width: '100%',
+            height: '100%'
+          }
+          case 'lg': return {
+            width: '30%',
+          }
+          case 'xl': return {
+            width: '30%',
+          }
+          default:
+          throw 'Unsupported type';
+        }
+      },
+    adaptMain () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return {}
+          case 'sm': return {}
+          case 'md': return {}
+          case 'lg': return {
+            'padding-top': '100px'
+          }
+          case 'xl': return {
+            'padding-top': '100px',
+          }
+          default:
+          throw {};
+        }
+      },
+  },
   mounted() {
-    console.log(this.$route.name)
+    console.log(this.$vuetify.breakpoint.name)
   }
 }
 </script>
@@ -35,7 +77,6 @@ export default {
 .modal {
   display: none;
   position: fixed;
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
@@ -51,23 +92,14 @@ export default {
     margin: auto;
     padding: 0 10px 10px 10px;
     border: 1px solid #888;
-    width: 30%;
+    //width: 30%;
 
     .header {
       display: flex;
+      margin-top: 10px;
       justify-content: space-between;
       align-items: center;
 
-      #nav {
-      padding: 10px;
-      }
-      #nav a {
-        font-weight: bold;
-        color: #2c3e50;
-      }
-      #nav a.router-link-exact-active {
-        color: #42b983;
-      }
       .close {
         color: #aaaaaa;
         float: right;
@@ -80,7 +112,7 @@ export default {
         cursor: pointer;
       }
     }
-    .auth-content {
+    .auth-content > div {
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;

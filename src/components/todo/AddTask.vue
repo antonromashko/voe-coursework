@@ -87,7 +87,8 @@ export default {
   computed: {
     ...mapState({
       items: state => state.todosItems,
-      loggedInUser: state => state.loggedInUser
+      loggedInUser: state => state.loggedInUser,
+      history: state => state.historyData
     })
   },
   methods: {
@@ -109,6 +110,13 @@ export default {
         this.$store.commit('REMOVE_FROM_TODO_ITEM', this.itemKey);
       }
       this.$store.commit('SET_TODO_ITEM', res);
+      this.$store.commit('SET_HISTORY_ROW', [{
+        user: this.loggedInUser,
+        action: this.itemKey ? 'edited' : 'created',
+        moment: indexTs.toLocaleString(),
+        name: this.newItems.name.value
+      }])
+      localStorage.setItem('history', JSON.stringify(this.history))
     }
   },
   mounted() {
@@ -118,7 +126,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
