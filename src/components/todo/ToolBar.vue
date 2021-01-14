@@ -16,13 +16,6 @@
         v-model="searchValue"
         label="search"
     ></v-text-field>
-<!--    <FormInput-->
-<!--      v-model="searchValue"-->
-<!--      name="search"-->
-<!--      label="One row"-->
-<!--      type="text"-->
-<!--      :counter="false"-->
-<!--    />-->
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
@@ -31,14 +24,12 @@
 </template>
 
 <script>
-// import FormInput from "@/components/auth/FormInput.vue";
 import AddTask from "@/components/todo/AddTask.vue";
 import { ROUTER } from "@/const";
 
 export default {
   name: "ToolBar",
   components: {
-    // FormInput,
     AddTask
   },
   data() {
@@ -49,7 +40,12 @@ export default {
   },
   watch: {
     activeTab() {
-      this.$emit('changeTab', this.activeTab);
+      this.$store.commit('SET_ACTIVE_TAB', this.activeTab)
+      if (this.activeTab === 0 && this.$route.path !== ROUTER.TODOS) {
+        this.$router.push(ROUTER.TODOS)
+      } else if (this.activeTab === 1 && this.$route.path !== ROUTER.TODOS_COMPLETED) {
+        this.$router.push(ROUTER.TODOS_COMPLETED)
+      }
     },
     searchValue() {
       this.$emit('search', this.searchValue);
@@ -60,6 +56,11 @@ export default {
       localStorage.removeItem('logged_in');
       this.$store.commit('SET_LOGOUT_USER');
       this.$router.push(ROUTER.AUTH)
+    }
+  },
+  mounted() {
+    if (this.$route.name === 'TodosCompleted') {
+      this.activeTab = 1
     }
   }
 }

@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     todosItems:  {},
-    loggedInUser: false
+    loggedInUser: false,
+    activeTab: 0
   },
   mutations: {
     SET_TODO_ITEM (state, payload) {
@@ -29,6 +30,9 @@ export default new Vuex.Store({
     },
     SET_LOGOUT_USER (state) {
       state.loggedInUser = false;
+    },
+    SET_ACTIVE_TAB (state, payload) {
+      state.activeTab = payload;
     }
   },
   getters: {
