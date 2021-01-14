@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: 'vue-project/',
+    path: '/',
     name: 'Home',
-    redirect: 'vue-project/todos'
+    redirect: '/todos'
   },
   {
-    path: 'vue-project/registration',
+    path: '/registration',
     name: 'Registration',
     components: {
       Content: AuthView
@@ -23,14 +23,14 @@ const routes = [
     meta: { requiresLogin: false }
   },
   {
-    path: 'vue-project/auth',
+    path: '/auth',
     name: 'Auth',
     components: {
       Content: AuthView
     }
   },
   {
-    path: 'vue-project/todos',
+    path: '/todos',
     name: 'Todos',
     components: {
       Content: TodoView
@@ -38,7 +38,7 @@ const routes = [
     meta: { requiresLogin: true }
   },
   {
-    path: 'vue-project/todos-completed',
+    path: '/todos-completed',
     name: 'TodosCompleted',
     components: {
       Content: TodoView
@@ -46,7 +46,7 @@ const routes = [
     meta: { requiresLogin: true }
   },
   {
-    path: 'vue-project/history',
+    path: '/history',
     name: 'History',
     components: {
       Content: History
