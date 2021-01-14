@@ -109,7 +109,7 @@ export default {
       let res = {
         [this.itemKey || indexTs.getTime().toString()]: {
           action: indexTs.toLocaleString(),
-          image: this.newItems.image.value,
+          image: this.newItems.image.value !== '' ? this.newItems.image.value : 'https://pngicon.ru/file/uploads/1_60.png',
           description: this.newItems.description.value,
           name: this.newItems.name.value,
           moreButtons: false,

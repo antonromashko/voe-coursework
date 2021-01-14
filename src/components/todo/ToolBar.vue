@@ -11,18 +11,21 @@
       <v-tab>To Do</v-tab>
       <v-tab>Completed</v-tab>
     </v-tabs>
-    <v-spacer></v-spacer>
     <v-text-field v-model="searchValue" label="search" :style="adaptSearch"></v-text-field>
-    <v-icon>mdi-magnify</v-icon>
-    <v-btn icon to="/history" title="history"><v-icon>mdi-domain</v-icon></v-btn>
+    <v-btn icon @click="isRowPage = !isRowPage">
+      <v-icon>
+        {{ isRowPage ? mdiApps : 'mdi-format-list-bulleted-square' }}
+      </v-icon>
+    </v-btn>
+    <v-btn class="active" icon to="/history" title="history"><v-icon>mdi-domain</v-icon></v-btn>
     <v-btn icon color="error" title="logout" @click="logoutUser"><v-icon>{{ logoutIcon }}</v-icon></v-btn>
   </v-toolbar>
 </template>
 
 <script>
 import AddTask from "@/components/todo/AddTask.vue";
-import {ROUTER} from "@/const";
-import {mdiAccountArrowLeftOutline} from '@mdi/js';
+import { ROUTER } from "@/const";
+import { mdiAccountArrowLeftOutline, mdiApps } from '@mdi/js';
 
 export default {
   name: "ToolBar",
@@ -33,7 +36,9 @@ export default {
     return {
       activeTab: 0,
       searchValue: '',
-      logoutIcon: mdiAccountArrowLeftOutline
+      logoutIcon: mdiAccountArrowLeftOutline,
+      mdiApps: mdiApps,
+      isRowPage: true
     }
   },
   computed: {
@@ -59,7 +64,10 @@ export default {
       }
     },
     searchValue() {
-      this.$emit('search', this.searchValue);
+      this.$store.commit('SET_SEARCH_VALUE', this.searchValue)
+    },
+    isRowPage() {
+      this.$emit('pageChange', this.isRowPage);
     }
   },
   methods: {

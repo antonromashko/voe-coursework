@@ -8,7 +8,8 @@ export default new Vuex.Store({
     todosItems:  {},
     loggedInUser: false,
     activeTab: 0,
-    historyData: []
+    historyData: [],
+    searchValue: ''
   },
   mutations: {
     SET_TODO_ITEM (state, payload) {
@@ -37,9 +38,20 @@ export default new Vuex.Store({
     },
     SET_HISTORY_ROW (state, payload) {
       state.historyData = [ ...state.historyData, ...payload ];
+    },
+    SET_SEARCH_VALUE(state, payload) {
+      state.searchValue = payload;
     }
   },
   getters: {
-
+    GET_FILTERED_TODO_ITEMS (state) {
+      if (Object.keys(state.todosItems).length > 0) {
+        return Object.fromEntries(Object.entries(state.todosItems).filter(item => {
+          if(item[1].name.toString().indexOf(state.searchValue) >= 0 || item[1].description.toString().indexOf(state.searchValue) >= 0) {
+            return state.activeTab === 1 ? item[1].checked === true : item[1].checked === false
+          }
+        }))
+      }
+    }
   }
 })

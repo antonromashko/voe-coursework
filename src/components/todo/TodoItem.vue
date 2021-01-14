@@ -1,10 +1,8 @@
 <template>
-  <v-list-item :key="name">
-    <v-list-item-avatar>
-      <v-img :src="image"></v-img>
-    </v-list-item-avatar>
+  <v-list-item style="width: 100%">
+    <slot name="avatar"></slot>
     <v-list-item-content>
-      <v-list-item-action-text v-if="edited" v-text="'edited'"></v-list-item-action-text>
+      <v-list-item-action-text v-text="'edited'" :style="editedStyle"></v-list-item-action-text>
       <v-list-item-title
           v-text="name"
           :style="{'text-decoration': completed ? 'line-through' : ''}">
@@ -12,33 +10,15 @@
       <v-list-item-subtitle v-text="description"></v-list-item-subtitle>
     </v-list-item-content>
     <slot name="action"></slot>
-    <v-btn class="ml-4" icon @click="$emit('showMoreButtons')">
-      <v-icon>{{ mdiDotsHorizontal }}</v-icon>
-    </v-btn>
-    <v-btn
-        v-if="moreButtons"
-        class="ml-4" text
-        icon
-        color="red lighten-2"
-        @click="$emit('deleteItem')"
-    >
-      <v-icon>{{ mdiDelete }}</v-icon>
-    </v-btn>
     <slot name="add-task"></slot>
   </v-list-item>
 </template>
 
 <script>
-import { mdiDelete, mdiDotsHorizontal } from "@mdi/js";
-
 export default {
   name: "TodoItem",
   props: {
     name: {
-      type: String,
-      required: true
-    },
-    image: {
       type: String,
       required: true
     },
@@ -59,10 +39,14 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      mdiDotsHorizontal: mdiDotsHorizontal,
-      mdiDelete: mdiDelete
+  computed: {
+    editedStyle() {
+      if (!this.edited) {
+        return {
+          color: 'white'
+        }
+      }
+      return {}
     }
   }
 }
