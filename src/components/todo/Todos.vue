@@ -47,9 +47,9 @@
 <script>
 import ToolBar from "@/components/todo/ToolBar.vue";
 import TodoItem from "@/components/todo/TodoItem.vue";
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 import AddTask from "@/components/todo/AddTask";
-import {mdiBorderColor} from "@mdi/js";
+import { mdiBorderColor } from "@mdi/js";
 
 export default {
   name: "Todos",

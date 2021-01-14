@@ -101,7 +101,7 @@ export default {
           description: this.newItems.description.value,
           name: this.newItems.name.value,
           moreButtons: false,
-          checked: false,
+          checked: this.itemKey && this.items[this.itemKey].checked,
           edited: !!this.itemKey
         }
       }
