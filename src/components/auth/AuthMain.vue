@@ -19,18 +19,16 @@
         dismissible
         max-width="350"
         :value="alert"
-    >
-      Check username and password
+      >
+      {{ alertMessage }}
     </v-alert>
       </template>
       <template #content>
-        <Auth v-if="$route.name === 'Auth'" @login="login"/>
-        <Registration v-if="$route.name === 'Registration'"/>
+        <Auth v-if="$route.name === 'Auth'" @login="loginFailed"/>
+        <Registration v-if="$route.name === 'Registration'" @sign-up="signUpFailed"/>
       </template>
     </Modal>
-
   </div>
-
 </template>
 
 <script>
@@ -49,21 +47,27 @@ export default {
     return {
       showModal: true,
       isRegistered: true,
-      alert: false
+      alert: false,
+      alertMessage: ''
     }
   },
   methods: {
-    login(logged) {
-      if (!logged) {
+    alertLogin(isLogged) {
+      if (!isLogged) {
         this.alert = true;
         setTimeout(()=>{
-          this.alert=false
+          this.alert=false;
         },5000)
       }
+    },
+    signUpFailed(isLogged, login) {
+      this.alertLogin(isLogged);
+      this.alertMessage = `Login ${login} already exists`
+    },
+    loginFailed(isLogged) {
+      this.alertLogin(isLogged);
+      this.alertMessage = 'Check username and password'
     }
-  },
-  mounted() {
-    console.log(this.$route.name)
   }
 }
 </script>

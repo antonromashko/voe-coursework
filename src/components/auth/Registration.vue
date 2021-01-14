@@ -93,9 +93,20 @@ export default {
   },
   methods: {
     signUp(data) {
-      localStorage.setItem(data.login.value, JSON.stringify(data));
-      this.$store.commit('SET_LOGIN_USER', data.login.value)
-      this.$router.push(ROUTER.TODOS)
+      // check if login exists
+      let userData = JSON.parse(localStorage.getItem(this.formData.login.value));
+      if (userData === null) {
+        //set user
+        localStorage.setItem(data.login.value, JSON.stringify(data));
+        this.$store.commit('SET_LOGIN_USER', data.login.value);
+        // reset previous user data in store
+        this.$store.commit('RESET_TODOS_ITEMS', {});
+        // set history to store
+        this.$store.commit('SET_HISTORY_ROW', JSON.parse(localStorage.getItem('history')));
+        // push router
+        this.$router.push(ROUTER.TODOS);
+      }
+      this.$emit('sign-up', userData === null, this.formData.login.value)
     }
   }
 }

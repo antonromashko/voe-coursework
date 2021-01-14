@@ -55,7 +55,9 @@ const routes = [
   },
   {
     path: '*',
-    component: P404
+    components:{
+      Content: P404
+    }
   }
 ]
 

@@ -3,8 +3,15 @@
     <v-card class="mx-auto" max-width="700">
       <ToolBar @pageChange="pageChange"/>
 
-      <RowPage v-if="Object.keys(filteredTodoItems).length > 0 && isRowPage" @todoItemChange="todoItemChange" @showMore="showMore" @deleteItem="deleteItem"/>
-      <BlockPage v-else-if="Object.keys(filteredTodoItems).length > 0 && !isRowPage" @showMore="showMore" @deleteItem="deleteItem"/>
+      <RowPage
+          v-if="filteredTodoItems && Object.keys(filteredTodoItems).length > 0 && isRowPage"
+          @todoItemChange="todoItemChange"
+          @showMore="showMore"
+          @deleteItem="deleteItem"/>
+      <BlockPage
+          v-else-if="filteredTodoItems && Object.keys(filteredTodoItems).length > 0 && !isRowPage"
+          @showMore="showMore"
+          @deleteItem="deleteItem"/>
       <v-list-item-subtitle
           v-else
           v-text="'No data'"
@@ -77,7 +84,7 @@ export default {
         name: item.name
       }])
       localStorage.setItem('history', JSON.stringify(this.history))
-    }
+    },
   },
   created() {
     const user = localStorage.getItem('logged_in');

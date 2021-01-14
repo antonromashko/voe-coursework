@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="not-found">
     <h1>404</h1>
     <br/>
     <h3>Not Found</h3>
@@ -13,5 +13,8 @@ export default {
 </script>
 
 <style scoped>
-
+.not-found {
+  text-align: center;
+  color: #a70000;
+}
 </style>

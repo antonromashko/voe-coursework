@@ -64,6 +64,10 @@ export default {
       let loggedIn = userData && userData.login.value === this.formData.login.value && userData.password.value === this.formData.password.value
       if (loggedIn) {
         this.$store.commit('SET_LOGIN_USER', this.formData.login.value)
+        // reset previous user data in store
+        this.$store.commit('RESET_TODOS_ITEMS', {});
+        // set history to store
+        this.$store.commit('SET_HISTORY_ROW', JSON.parse(localStorage.getItem('history')));
         this.$router.push(ROUTER.TODOS);
       }
       this.$emit('login', loggedIn)

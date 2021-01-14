@@ -66,9 +66,6 @@ export default {
           throw {};
         }
       },
-  },
-  mounted() {
-    console.log(this.$vuetify.breakpoint.name)
   }
 }
 </script>
