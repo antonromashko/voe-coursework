@@ -40,7 +40,13 @@ export const RULES = {
   DESCRIPTION: {
     counter: 50,
     rules: [
-      v => (!!v && v.length <= 50) || 'Name must be less than 50 characters',
+      v => (!v || v.length <= 50) || 'Name must be less than 50 characters',
+    ]
+  },
+  IMAGE: {
+    counter: false,
+    rules: [
+      v => (!v || v.endsWith('.jpg') || v.endsWith('.png')) || 'Image format is not valid. Use .jpg or .png'
     ]
   }
 }

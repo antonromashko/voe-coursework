@@ -44,8 +44,8 @@
 </template>
 
 <script>
-
 import { mapState } from "vuex";
+import { RULES } from "@/const";
 
 export default {
   name: "AddTask",
@@ -63,26 +63,22 @@ export default {
             label: 'NAME',
             value: '',
             type: 'text',
-            counter: 30,
-            rules: [
-              v => !!v || 'Name is required',
-              v => v.length <= 30 || 'Name must be less than 10 characters',
-            ],
+            counter: RULES.NAME.counter,
+            rules: RULES.NAME.rules
           },
           description: {
             label: 'DESCRIPTION',
             value: '',
             type: 'text',
-            counter: 50,
-            rules: [
-              v => !!v || 'Description is required',
-              v => v.length <= 50 || 'Description must be less than 10 characters',
-            ],
+            counter: RULES.DESCRIPTION.counter,
+            rules: RULES.DESCRIPTION.rules
           },
           image: {
             label: 'IMAGE',
             value: '',
-            type: 'text'
+            type: 'text',
+            counter: RULES.IMAGE.counter,
+            rules: RULES.IMAGE.rules
           },
         },
       valid: false
