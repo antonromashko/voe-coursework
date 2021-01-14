@@ -12,10 +12,10 @@
       <v-tab>Completed</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
-    <v-text-field v-model="searchValue" label="search"></v-text-field>
-    <v-btn icon><v-icon>mdi-magnify</v-icon></v-btn>
-    <v-btn icon to="/history"><v-icon>mdi-domain</v-icon></v-btn>
-    <v-btn icon color="error" @click="logoutUser"><v-icon>{{ logoutIcon }}</v-icon></v-btn>
+    <v-text-field v-model="searchValue" label="search" :style="adaptSearch"></v-text-field>
+    <v-icon>mdi-magnify</v-icon>
+    <v-btn icon to="/history" title="history"><v-icon>mdi-domain</v-icon></v-btn>
+    <v-btn icon color="error" title="logout" @click="logoutUser"><v-icon>{{ logoutIcon }}</v-icon></v-btn>
   </v-toolbar>
 </template>
 
@@ -42,8 +42,8 @@ export default {
           case 'xs': return {}
           case 'sm': return {}
           case 'md': return {}
-          case 'lg': return {width: '200px'}
-          case 'xl': return {width: '200px'}
+          case 'lg': return {width: '300px'}
+          case 'xl': return {width: '300px'}
           default:
           throw {};
         }
@@ -78,6 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$adapt-search: 200px;
 ::v-deep {
   .v-text-field__details {
     height: 0;
