@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="700">
-      <ToolBar @changeTab="changeTab"/>
+      <ToolBar @changeTab="changeTab" @search="searchTodo"/>
       <v-list two-line>
         <v-list active-class="blue-grey lighten-5">
           <template v-for="(item, key, index) in filteredTodoItems">
@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       activeTab: 0,
+      searchValue: '',
       mdiDotsHorizontal: mdiDotsHorizontal,
       mdiDelete: mdiDelete,
       mdiBorderColor: mdiBorderColor,
@@ -87,7 +88,9 @@ export default {
     }),
     filteredTodoItems() {
       return Object.fromEntries(Object.entries(this.items).filter(item => {
-        return this.activeTab === 1 ? item[1].checked === true : item[1].checked === false
+        if (item[1].name.toString().indexOf(this.searchValue) >= 0 || item[1].description.toString().indexOf(this.searchValue) >=0) {
+          return this.activeTab === 1 ? item[1].checked === true : item[1].checked === false
+        }
       }))
     }
   },
@@ -110,6 +113,9 @@ export default {
     changeTab(val) {
       this.activeTab = val;
       this.$router.push(this.activeTab === 0 ? ROUTER.TODOS : ROUTER.TODOS_COMPLETED)
+    },
+    searchTodo(val) {
+      this.searchValue = val
     }
   },
   created() {

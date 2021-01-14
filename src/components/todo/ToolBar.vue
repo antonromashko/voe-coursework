@@ -12,14 +12,17 @@
       <v-tab>Completed</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
-    <FormInput
-      v-model="value"
-      name="search"
-      label="search"
-      type="text"
-      :value="value"
-      :counter="false"
-    />
+    <v-text-field
+        v-model="searchValue"
+        label="search"
+    ></v-text-field>
+<!--    <FormInput-->
+<!--      v-model="searchValue"-->
+<!--      name="search"-->
+<!--      label="One row"-->
+<!--      type="text"-->
+<!--      :counter="false"-->
+<!--    />-->
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
@@ -28,25 +31,28 @@
 </template>
 
 <script>
-import FormInput from "@/components/auth/FormInput.vue";
+// import FormInput from "@/components/auth/FormInput.vue";
 import AddTask from "@/components/todo/AddTask.vue";
 import { ROUTER } from "@/const";
 
 export default {
   name: "ToolBar",
   components: {
-    FormInput,
+    // FormInput,
     AddTask
   },
   data() {
     return {
       activeTab: 0,
-      value: '',
+      searchValue: '',
     }
   },
   watch: {
     activeTab() {
-      this.$emit('changeTab', this.activeTab)
+      this.$emit('changeTab', this.activeTab);
+    },
+    searchValue() {
+      this.$emit('search', this.searchValue);
     }
   },
   methods: {
@@ -59,6 +65,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+::v-deep {
+  .v-text-field__details {
+    height: 0;
+    min-height: 0;
+    width: 200px;
+  }
+}
 </style>
