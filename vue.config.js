@@ -1,7 +1,7 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'local'
-    ? '/'
-    : '/vue-project/',
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-project/'
+    : '/',
     css: {
       requireModuleExtension: true,
         sourceMap: true,
